@@ -7,24 +7,21 @@ class Optimizer:
         self.optimizer = None
         self.lr_scheduler = None
         self.lr = opt.lr
-        self.beta1 = opt.beta1
-        self.beta2 = opt.beta2
-        self.gamma = opt.gamma
 
         self._init_optimizer(params)
         self._init_lr_scheduler()
 
     def _init_optimizer(self, params):
-        if self.optimizer_name == "Adam":
-            self.optimizer = optim.Adam(params, lr=self.lr, betas=(self.beta1, self.beta2))
+        optimizer = getattr(optim, self.optimizer_name)
+        self.optimizer = optimizer(params, lr=self.lr)
 
     def _init_lr_scheduler(self):
         if self.lr_scheduler_name is None:
             self.lr_scheduler = None
         elif self.lr_scheduler_name == "StepLR":
-            self.lr_scheduler = optim.lr_scheduler.StepLR(self.optimizer, step_size=5, gamma=self.gamma)
+            self.lr_scheduler = optim.lr_scheduler.StepLR(self.optimizer, step_size=500, gamma=0.1)
         elif self.lr_scheduler_name == "ExponentialLR":
-            self.lr_scheduler = optim.lr_scheduler.ExponentialLR(self.optimizer, gamma=self.gamma)
+            self.lr_scheduler = optim.lr_scheduler.ExponentialLR(self.optimizer, gamma=0.1)
         elif self.lr_scheduler_name == "CosineAnnealingLR":
             self.lr_scheduler = optim.lr_scheduler.CosineAnnealingLR(self.optimizer, T_max=10)
 

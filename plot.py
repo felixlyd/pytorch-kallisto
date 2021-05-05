@@ -11,10 +11,11 @@ class Plot:
         self.lr = opt.lr
         self.plot = opt.plot
         self.log = opt.log
-        self.msg = 'Iter: {0:>6},  Loss: {1:>5.2},  Time: {2}'
+        self.msg = 'Iter: {0:>6},  Loss: {1:.8f},  Time: {2}'
         if self.plot:
             self.writer = SummaryWriter(
-                log_dir=os.path.join(self.log, "Kallisto_" + time.strftime('%m-%d_%H.%M', time.localtime())))
+                log_dir=os.path.join(self.log, "Kallisto_" + opt.optimizer + "_"
+                                     + time.strftime('%m-%d_%H.%M', time.localtime())))
         else:
             self.writer = None
 
